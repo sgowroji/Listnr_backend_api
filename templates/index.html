@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Processor</title>
+</head>
+<body>
+    <h1>Process a Report</h1>
+    <form id="reportForm">
+        <label for="report">Report:</label><br>
+        <textarea id="report" name="report" rows="4" cols="50"></textarea><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Response</h2>
+    <pre id="response"></pre>
+
+    <script>
+        document.getElementById('reportForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const report = document.getElementById('report').value;
+
+            fetch('/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ report: report })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
