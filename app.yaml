@@ -1,0 +1,17 @@
+runtime: python311  # Use the appropriate Python version (change if necessary)
+service: listnr-recommender-bot
+# Entry point for your application
+entrypoint: gunicorn -b :$PORT --timeout 60 main:app
+# Handlers define the routes for your application
+handlers:
+  - url: /
+    script: auto  # Automatically route all requests to the application
+    login: admin
+  - url: /process
+    script: auto
+manual_scaling:
+  instances: 2
+resources:
+  cpu: 2
+  memory_gb: 5
+  disk_size_gb: 50
